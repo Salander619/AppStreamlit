@@ -8,7 +8,7 @@ from st_pages import Page, Section, show_pages, add_page_title, add_indentation
 
 #### main init
 apptitle = 'FOM display facility'
-im = Image.open("PrototypeV2/FOM_streamlit_page/images/lisa.ico")
+im = Image.open("images/lisa.ico")
 st.set_page_config(page_title=apptitle,
                    page_icon=im,
                    layout="wide")
