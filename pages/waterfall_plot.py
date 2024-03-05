@@ -1,50 +1,32 @@
 #!/usr/bin/python3
 
-#homemade 
-import LISA_GB_configuration as myGB
-import LISA_noise_configuration as NOISE
-import utils
-#lisa
-from fastgb.fastgb import FastGB
-import lisaorbits
-import lisaconstants
-#display module
+# display module
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import plotly
-import streamlit.components.v1 as components
-import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 from PIL import Image
 from matplotlib import ticker
-import plotly.tools as tls
-#common
-import math as m
 import numpy as np
-from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-#import for test  and future upgrade
-import pandas as pd
-#from config_manager import ConfigManager
 import config_manager
-from st_pages import Page, Section, show_pages, add_page_title, add_indentation
+from st_pages import add_indentation
 
 ##########################################################################################
 # Title gestion
-apptitle = 'FOM display facility'
+apptitle = "FOM display facility"
 im = Image.open("images/lisa.ico")
-st.set_page_config(page_title=apptitle,
-                   page_icon=im,
-                   layout="wide")
+st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
 
 add_indentation()
+
 
 ##########################################################################################
 # definition of data loading function
 @st.cache_data
-def load_data( path_to_file ):
+def load_data(path_to_file):
     return np.load(path_to_file, allow_pickle=True)
+
 
 ##########################################################################################
 ### test shared parameter
@@ -54,7 +36,9 @@ st.write(st.session_state)
 ##########################################################################################
 # loading the data
 st.sidebar.title("Waterfall configuration")
-data_to_load= st.sidebar.radio("Configuration selection :", ["default", "scird"], key = "data_waterfall")
+data_to_load = st.sidebar.radio(
+    "Configuration selection :", ["default", "scird"], key="data_waterfall"
+)
 
 fn = None
 if data_to_load == "scird":
@@ -65,24 +49,30 @@ else:
 T = load_data(fn)
 
 [z_mesh, Msource_mesh, SNR_mesh, SNR_std_mesh, waveform_params, pop] = T
-# z_mesh = , Msource_mesh = , SNR_mesh = , reste = metadatas  
+# z_mesh = , Msource_mesh = , SNR_mesh = , reste = metadatas
 
-levels = [10, 20, 50, 100, 200, 500, 1000, 4000]#, 2000, 4000, 2.e4]
+levels = [10, 20, 50, 100, 200, 500, 1000, 4000]  # , 2000, 4000, 2.e4]
 
 ##########################################################################################
 # with matplotlib
 
-cmap = plt.get_cmap('PiYG')
+cmap = plt.get_cmap("PiYG")
 cmap = plt.cm.coolwarm
-fig, ax = plt.subplots(1,1, figsize=[20,10])
+fig, ax = plt.subplots(1, 1, figsize=[20, 10])
 
-SN_cl = np.clip(SNR_mesh, 1., 4000)#None)
-cs1 = ax.contourf(Msource_mesh, z_mesh, SN_cl, levels=levels,
-                  locator=ticker.LogLocator(), norm=mpl.colors.LogNorm(),
-                  cmap=cmap)
-#ax.clabel(cs1, fmt='%2.1f', colors='k', fontsize=14)
+SN_cl = np.clip(SNR_mesh, 1.0, 4000)  # None)
+cs1 = ax.contourf(
+    Msource_mesh,
+    z_mesh,
+    SN_cl,
+    levels=levels,
+    locator=ticker.LogLocator(),
+    norm=mpl.colors.LogNorm(),
+    cmap=cmap,
+)
+# ax.clabel(cs1, fmt='%2.1f', colors='k', fontsize=14)
 cbar = fig.colorbar(cs1, ax=ax)
-ax.set_xscale('log')
+ax.set_xscale("log")
 
 st.pyplot(fig, True)
 
@@ -90,22 +80,21 @@ st.pyplot(fig, True)
 # with plotly
 
 # create the plot
-fig2 = go.Figure(data=
-                    go.Contour(
-                        z = SNR_mesh,
-                        colorbar=dict(
-                            title="Signal Noise Ratio",
-                            titleside="top"
-                        )
-                    ))
+fig2 = go.Figure(
+    data=go.Contour(
+        z=SNR_mesh, colorbar=dict(title="Signal Noise Ratio", titleside="top")
+    )
+)
 
 # update axis of the plot
-fig2.update_xaxes( type="log" )
-fig2.update_layout( width=500, height=500, yaxis_range=[0,25], xaxis_range=[1,2] ) # set size of plot and min/max of axis (x is in log mode so range is 10 to 100)
-fig2.update_traces(zmin=10, zmax=10000) # set min and max of colorbar
+fig2.update_xaxes(type="log")
+fig2.update_layout(
+    width=500, height=500, yaxis_range=[0, 25], xaxis_range=[1, 2]
+)  # set size of plot and min/max of axis (x is in log mode so range is 10 to 100)
+fig2.update_traces(zmin=10, zmax=10000)  # set min and max of colorbar
 
 # update title of axis
-fig2['layout']['yaxis'].title = "Redshift"
-fig2['layout']['xaxis'].title = "Total mass"
+fig2["layout"]["yaxis"].title = "Redshift"
+fig2["layout"]["xaxis"].title = "Total mass"
 
 st.plotly_chart(fig2, theme=None, use_container_width=True)
