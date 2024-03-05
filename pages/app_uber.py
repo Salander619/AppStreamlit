@@ -1,3 +1,5 @@
+""" Example app found in streamlit doc """
+
 #!/usr/bin/python3
 
 import streamlit as st
