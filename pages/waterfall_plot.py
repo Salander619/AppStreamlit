@@ -9,8 +9,8 @@ from PIL import Image
 from matplotlib import ticker
 import numpy as np
 
-import config_manager
 from st_pages import add_indentation
+import config_manager
 
 ##########################################################################################
 # Title gestion
