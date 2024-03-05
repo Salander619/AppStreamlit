@@ -1,3 +1,5 @@
+""" Display the sensitivity curves """
+
 #!/usr/bin/python3
 
 # lisa

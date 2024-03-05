@@ -1,9 +1,11 @@
+""" Entry point of our application, organize the pages into sections """
+
 #!/usr/bin/python3
 
 import streamlit as st
-import config_manager
 from PIL import Image
 from st_pages import Page, Section, show_pages, add_page_title
+import config_manager
 
 #### main init
 apptitle = "FOM display facility"

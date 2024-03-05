@@ -1,3 +1,5 @@
+""" Display the waterfall plot """
+
 #!/usr/bin/python3
 
 # display module
@@ -7,6 +9,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from PIL import Image
 from matplotlib import ticker
+from matplotlib import cm
 import numpy as np
 
 from st_pages import add_indentation
@@ -57,7 +60,7 @@ levels = [10, 20, 50, 100, 200, 500, 1000, 4000]  # , 2000, 4000, 2.e4]
 # with matplotlib
 
 cmap = plt.get_cmap("PiYG")
-cmap = plt.cm.coolwarm
+cmap = cm.coolwarm
 fig, ax = plt.subplots(1, 1, figsize=[20, 10])
 
 SN_cl = np.clip(SNR_mesh, 1.0, 4000)  # None)
@@ -82,7 +85,10 @@ st.pyplot(fig, True)
 # create the plot
 fig2 = go.Figure(
     data=go.Contour(
-        z=SNR_mesh, colorbar=dict(title="Signal Noise Ratio", titleside="top")
+        x=Msource_mesh,
+        y=z_mesh,
+        z=SN_cl,
+        colorbar=dict(title="Signal Noise Ratio", titleside="top"),
     )
 )
 

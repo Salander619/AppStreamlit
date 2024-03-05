@@ -1,3 +1,5 @@
+""" Allow to share parameters between pages """
+
 #!/usr/bin/python3
 
 import streamlit as st
