@@ -25,9 +25,9 @@ import LISA_GB_configuration as myGB
 import LISA_noise_configuration as NOISE
 import utils
 
-apptitle = "FOM display facility"
+app_title = "FOM display facility"
 im = Image.open("images/lisa.ico")
-st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
+st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_indentation()
 
