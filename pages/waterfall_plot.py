@@ -9,7 +9,7 @@ from PIL import Image
 import numpy as np
 
 from st_pages import add_indentation
-from config_manager import ConfigManager  # pylint: disable=import-error
+from config_manager import ConfigManager
 
 ##############################################################################
 # Title gestion
@@ -48,7 +48,7 @@ T = load_data(fn)
     T  # pylint: disable=unused-variable
 )
 
-SN_cl = np.clip(SNR_mesh, 1.0, 4000)  # None)
+SN_cl = np.clip(SNR_mesh, 1.0, 4000)
 tickvals = [10, 20, 50, 100, 200, 500, 1000, 4000]
 fig2 = go.Figure(
     data=go.Contour(
@@ -63,6 +63,8 @@ fig2 = go.Figure(
         ),
     )
 )
+# update axis of the plot
+fig2.update_xaxes(type="log")
 # update title of axis
 fig2["layout"]["yaxis"].title = "Redshift"
 fig2["layout"]["xaxis"].title = "Total mass"

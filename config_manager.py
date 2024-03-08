@@ -24,18 +24,22 @@ class ConfigManager:
         if "noise_budget" not in st.session_state:
             st.session_state["noise_budget"] = "fom"
         if "duration" not in st.session_state:
-            st.session_state["duration"] = "4 years"
+            st.session_state["duration"] = 4.0
 
         # setup noise config
         if self.use_noise_config:
             st.sidebar.radio(
                 "Select your noise configuration",
-                ["config 1", "config 2", "config 3"],
+                ["fom", "scird"],
                 key="noise_budget",
             )
 
         # setup mission duration
         if self.use_duration_config:
-            st.sidebar.radio(
-                "Select the mission duration", ["4 years", "7 years"], key="duration"
+            st.sidebar.slider(
+                "duration in year ?",
+                min_value=1.0,
+                max_value=10.0,
+                step=0.5,
+                key="duration",
             )

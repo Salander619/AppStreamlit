@@ -68,9 +68,7 @@ if "select all" in list_of_GB:
     list_of_GB = list_of_names
 
 
-mission_duration = st.sidebar.slider(
-    "duration in year ?", min_value=1.0, max_value=10.0, step=0.5
-)
+mission_duration = st.session_state["duration"]
 
 tdi2 = True
 display_mode = "x unified"
@@ -132,6 +130,7 @@ for j, s in enumerate(gb_config_file):
             source_tmp.get_source_parameters()[0][2] / (1e-23)
         )  # pylint: disable=line-too-long
 
+        # pylint: disable=unused-variable
         X, _, _, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)
         X_f = df * np.arange(kmin, kmin + len(X.flatten()))
 

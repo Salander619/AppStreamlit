@@ -5,7 +5,7 @@
 import streamlit as st
 from PIL import Image
 from st_pages import Page, Section, show_pages, add_page_title
-import config_manager
+from config_manager import ConfigManager
 
 #### main init
 app_title = "FOM display facility"
@@ -14,7 +14,8 @@ st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_page_title()
 
-config_manager.display_config()
+cm = ConfigManager("Home", False, False)
+cm.display_config()
 
 # pages and sections gestion
 show_pages(
@@ -32,4 +33,4 @@ show_pages(
 )
 
 # page layout
-st.image("image/GW_for_everyone.jpg", caption="Scope of the LISA project")
+st.image("images/GW_for_everyone.png", caption="Scope of the LISA project")
