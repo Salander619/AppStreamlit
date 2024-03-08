@@ -16,9 +16,8 @@ from PIL import Image
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-# from config_manager import ConfigManager
+from config_manager import ConfigManager
 from st_pages import add_indentation
-import config_manager
 
 # homemade
 import LISA_GB_configuration as myGB
@@ -31,12 +30,8 @@ st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_indentation()
 
-### test shared parameter
-# shared_data = ConfigManager()
-# shared_data.display_parameter()
-
-config_manager.display_config()
-st.write(st.session_state)
+cm = ConfigManager("Sensitivity", False, True)
+cm.display_config()
 
 ### data init
 # verification GB reader
@@ -52,7 +47,6 @@ GB_out = np.rec.fromarrays(
     ],
     names=["freq", "sh", "snr"],
 )
-
 
 list_of_names = gb_config_file["Name"]
 
@@ -78,24 +72,8 @@ mission_duration = st.sidebar.slider(
     "duration in year ?", min_value=1.0, max_value=10.0, step=0.5
 )
 
-# nb_of_GB = st.sidebar.slider('number of GB ?', min_value=0, max_value=max_nb_of_sources, step=1)
-
-tdi_type = st.sidebar.radio(
-    "select your TDI version", ["tdi1.5", "tdi2.0"]
-)  # horizontal=True,)
-
-if tdi_type == "tdi1.5":
-    tdi2 = False
-elif tdi_type == "tdi2.0":
-    tdi2 = True
-else:
-    tdi2 = False
-
-
-# display mode
-display_mode = st.sidebar.radio(
-    "select your display mode", ["x unified", "x", "closest"]
-)
+tdi2 = True
+display_mode = "x unified"
 
 ####### prepare the data
 # noise
@@ -104,7 +82,9 @@ test0 = NOISE.LISA_analytical_noise("dummy", 42)
 freq = np.logspace(-5, 0, 9990)
 duration = mission_duration  # years
 tobs = duration * lisaconstants.SIDEREALYEAR_J2000DAY * 24 * 60 * 60210
-lisa_orbits = lisaorbits.EqualArmlengthOrbits(dt=8640, size=(tobs + 10000) // 8640)
+lisa_orbits = lisaorbits.EqualArmlengthOrbits(
+    dt=8640, size=(tobs + 10000) // 8640
+)  # pylint: disable=line-too-long
 # to control the +10000
 
 # noise psd
@@ -170,12 +150,6 @@ for j, s in enumerate(gb_config_file):
 
 list_of_source = []
 
-# st.error('Error message')
-# st.warning('Warning message')
-# st.info('Info message')
-# st.success('Success message')
-
-
 ####### display the sensitivity curve
 vf = []
 vy = []
@@ -194,7 +168,6 @@ for vgb in GB_out:
 fig = go.Figure()
 
 tmp = list_of_names.tolist()  # list_of_GB
-
 
 fig.add_trace(
     go.Scatter(
@@ -267,3 +240,8 @@ fig2.update_xaxes(
 )
 fig2.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
 st.plotly_chart(fig2, theme=None, use_container_width=True)
+
+
+ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp = (
+    100
+)

@@ -5,25 +5,35 @@
 import streamlit as st
 
 
-def display_config():
-    st.session_state.update(st.session_state)
+class ConfigManager:
+    def __init__(self, name_FOM, use_noise_config, use_duration_config):
+        self.name = name_FOM
 
-    st.sidebar.header("Common configuration")
+        self.use_noise_config = use_noise_config
+        self.use_duration_config = use_duration_config
 
-    # initialisation for first run
-    if "noise_budget" not in st.session_state:
-        st.session_state["noise_budget"] = "config 1"
-    if "duration" not in st.session_state:
-        st.session_state["duration"] = "4 years"
+    def display_config(self):
+        """display the configuration and modification widget"""
+        st.session_state.update(st.session_state)
 
-    # setup noise config
-    st.sidebar.radio(
-        "Select your noise configuration",
-        ["config 1", "config 2", "config 3"],
-        key="noise_budget",
-    )
+        st.sidebar.header(self.name + " configuration")
 
-    # setup mission duration
-    st.sidebar.radio(
-        "Select the mission duration", ["4 years", "7 years"], key="duration"
-    )
+        # initialisation for first run
+        if "noise_budget" not in st.session_state:
+            st.session_state["noise_budget"] = "fom"
+        if "duration" not in st.session_state:
+            st.session_state["duration"] = "4 years"
+
+        # setup noise config
+        if self.use_noise_config:
+            st.sidebar.radio(
+                "Select your noise configuration",
+                ["config 1", "config 2", "config 3"],
+                key="noise_budget",
+            )
+
+        # setup mission duration
+        if self.use_duration_config:
+            st.sidebar.radio(
+                "Select the mission duration", ["4 years", "7 years"], key="duration"
+            )

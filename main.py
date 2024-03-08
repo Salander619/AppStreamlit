@@ -15,16 +15,21 @@ st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 add_page_title()
 
 config_manager.display_config()
-st.write(st.session_state)
 
 # pages and sections gestion
 show_pages(
     [
         Page("main.py", "Home"),
-        Section(name="FOM"),
+        Section(
+            name="SO1: Study the formation and evolution of compact binary stars and the structure of the Milky Way Galaxy"
+        ),  # pylint: disable=line-too-long
         Page("pages/sensitivity_plot.py", "Sensitivity"),
+        Section(
+            name="SO2: Trace the origins, growth and merger histories of massive Black Holes"
+        ),  # pylint: disable=line-too-long
         Page("pages/waterfall_plot.py", "Waterfall"),
-        Section(name="Tests for fun"),
-        Page("pages/app_uber.py", "App uber from Streamlit doc"),
     ]
 )
+
+# page layout
+st.image("image/GW_for_everyone.jpg", caption="Scope of the LISA project")
