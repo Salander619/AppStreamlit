@@ -94,16 +94,6 @@ SXX_confusion_noise_only = test0.confusion_noise_psd(
 )
 SXX_noise = SXX_noise_instru_only + SXX_confusion_noise_only
 
-SXY_noise_instru_only = test0.instru_noise_psd(freq, tdi2_=tdi2, option_="XY")
-SXY_confusion_noise_only = test0.confusion_noise_psd(
-    freq, duration_=duration, tdi2_=tdi2, option_="XY"
-)
-SXY_noise = SXY_noise_instru_only + SXX_confusion_noise_only
-
-
-SXX = spline(freq, SXX_noise)
-SXY = spline(freq, SXY_noise)
-
 # response
 R_ = utils.fast_response(freq, tdi2=tdi2)
 R = spline(freq, R_)
@@ -138,17 +128,19 @@ for j, s in enumerate(gb_config_file):
 
         source_tmp = myGB.LISA_GB_source(pGW["Name"], params)
         list_of_sources.append(source_tmp)
-        list_of_amplitude.append(source_tmp.get_source_parameters()[0][2] / (1e-23))
+        list_of_amplitude.append(
+            source_tmp.get_source_parameters()[0][2] / (1e-23)
+        )  # pylint: disable=line-too-long
 
-        X, Y, Z, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)
+        X, _, _, kmin = GB.get_fd_tdixyz(
+            source_tmp.get_source_parameters(), tdi2=True
+        )  # pylint: disable=line-too-long
         X_f = df * np.arange(kmin, kmin + len(X.flatten()))
 
         h0 = np.sqrt(4 * df * float(np.sum(np.abs(X) ** 2 / R(X_f))))
         h0 *= np.sqrt(2)
         GB_out["sh"][j] = h0**2
         GB_out["freq"][j] = pGW["Frequency"]
-
-list_of_source = []
 
 ####### display the sensitivity curve
 vf = []

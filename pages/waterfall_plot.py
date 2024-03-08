@@ -44,28 +44,23 @@ else:
 
 T = load_data(fn)
 
-[z_mesh, Msource_mesh, SNR_mesh, __, __, __] = T
+[z_mesh, Msource_mesh, SNR_mesh, SNR_std_mesh, waveform_params, pop] = T
 
-SN_cl = np.clip(SNR_mesh, 1.0, 4000)
-
-##############################################################################
-# create the plot
-
+SN_cl = np.clip(SNR_mesh, 1.0, 4000)  # None)
+tickvals = [10, 20, 50, 100, 200, 500, 1000, 4000]
 fig2 = go.Figure(
     data=go.Contour(
-        x=Msource_mesh,
-        y=z_mesh,
-        z=SN_cl,
-        colorbar={"title": "Signal Noise Ratio", "titleside": "top"},
+        x=Msource_mesh[0, :],
+        y=z_mesh[:, 0],
+        z=np.log10(SN_cl),
+        colorbar=dict(
+            title="Signal Noise Ratio",
+            titleside="top",
+            tickvals=np.log10(tickvals),
+            ticktext=tickvals,
+        ),
     )
 )
-
-# update axis of the plot
-fig2.update_xaxes(type="log")
-fig2.update_layout(width=500, height=500, yaxis_range=[0, 25], xaxis_range=[1, 2])
-# set size of plot and min/max of axis (x is in log mode so range is 10 to 100)
-fig2.update_traces(zmin=10, zmax=10000)  # set min and max of colorbar
-
 # update title of axis
 fig2["layout"]["yaxis"].title = "Redshift"
 fig2["layout"]["xaxis"].title = "Total mass"
