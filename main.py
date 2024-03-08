@@ -22,12 +22,12 @@ show_pages(
     [
         Page("main.py", "Home"),
         Section(
-            name="SO1: Study the formation and evolution of compact binary stars and the structure of the Milky Way Galaxy"
-        ),  # pylint: disable=line-too-long
+            name="SO1: Study the formation and evolution of compact binary stars and the structure of the Milky Way Galaxy"  # pylint: disable=line-too-long
+        ),
         Page("pages/sensitivity_plot.py", "Sensitivity"),
         Section(
-            name="SO2: Trace the origins, growth and merger histories of massive Black Holes"
-        ),  # pylint: disable=line-too-long
+            name="SO2: Trace the origins, growth and merger histories of massive Black Holes"  # pylint: disable=line-too-long
+        ),
         Page("pages/waterfall_plot.py", "Waterfall"),
     ]
 )

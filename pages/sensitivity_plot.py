@@ -79,10 +79,10 @@ test0 = NOISE.LISA_analytical_noise("dummy", 42)
 
 freq = np.logspace(-5, 0, 9990)
 duration = mission_duration  # years
-tobs = duration * lisaconstants.SIDEREALYEAR_J2000DAY * 24 * 60 * 60210
-lisa_orbits = lisaorbits.EqualArmlengthOrbits(
-    dt=8640, size=(tobs + 10000) // 8640
-)  # pylint: disable=line-too-long
+tobs = (
+    duration * lisaconstants.SIDEREALYEAR_J2000DAY * 24 * 60 * 60210
+)  # pylint: disable=no-member
+lisa_orbits = lisaorbits.EqualArmlengthOrbits(dt=8640, size=(tobs + 10000) // 8640)
 # to control the +10000
 
 # noise psd
@@ -126,9 +126,7 @@ for j, s in enumerate(gb_config_file):
 
         source_tmp = myGB.LISA_GB_source(pGW["Name"], params)
         list_of_sources.append(source_tmp)
-        list_of_amplitude.append(
-            source_tmp.get_source_parameters()[0][2] / (1e-23)
-        )  # pylint: disable=line-too-long
+        list_of_amplitude.append(source_tmp.get_source_parameters()[0][2] / (1e-23))
 
         # pylint: disable=unused-variable
         X, _, _, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)

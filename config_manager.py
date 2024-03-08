@@ -5,6 +5,7 @@
 import streamlit as st
 
 
+# pylint: disable=unused-variable
 class ConfigManager:
     """Setup the configuration throught st_session_state"""
 
@@ -17,6 +18,9 @@ class ConfigManager:
     def display_config(self):
         """display the configuration and modification widget"""
         st.session_state.update(st.session_state)
+
+        if self.name == "Home":
+            return
 
         st.sidebar.header(self.name + " configuration")
 
