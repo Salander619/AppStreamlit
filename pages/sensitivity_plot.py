@@ -16,8 +16,8 @@ from PIL import Image
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-from config_manager import ConfigManager
 from st_pages import add_indentation
+from config_manager import ConfigManager
 
 # homemade
 import LISA_GB_configuration as myGB
@@ -240,8 +240,3 @@ fig2.update_xaxes(
 )
 fig2.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
 st.plotly_chart(fig2, theme=None, use_container_width=True)
-
-
-ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp = (
-    100
-)
