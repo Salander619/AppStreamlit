@@ -193,17 +193,23 @@ fig.update_xaxes(
     exponentformat="e",
 )
 fig.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
-fig.update_layout(xaxis=dict(range=[-5, 0]))
-fig.update_layout(yaxis=dict(range=[-22, -15]))
+fig.update_layout(xaxis={"range": [-5, 0]})
+fig.update_layout(yaxis={"range": [-22, -15]})
 fig.update_layout(template="ggplot2")
 
 fig.update_layout(hovermode=display_mode)
 
 fig.update_layout(
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.02,
+        "xanchor": "right",
+        "x": 1,
+    }
 )
 
-fig.update_layout(height=600, width=1000)  # , grid= {'rows': 7, 'columns': 6})
+fig.update_layout(height=600, width=1000)
 st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
