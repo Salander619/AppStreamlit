@@ -8,9 +8,9 @@ from st_pages import Page, Section, show_pages, add_page_title
 import config_manager
 
 #### main init
-apptitle = "FOM display facility"
+app_title = "FOM display facility"
 im = Image.open("images/lisa.ico")
-st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
+st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_page_title()
 
