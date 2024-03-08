@@ -8,8 +8,8 @@ import streamlit as st
 class ConfigManager:
     """Setup the configuration throught st_session_state"""
 
-    def __init__(self, name_FOM, use_noise_config, use_duration_config):
-        self.name = name_FOM
+    def __init__(self, name_fom, use_noise_config, use_duration_config):
+        self.name = name_fom
 
         self.use_noise_config = use_noise_config
         self.use_duration_config = use_duration_config

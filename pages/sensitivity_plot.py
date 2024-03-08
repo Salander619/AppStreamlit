@@ -128,13 +128,9 @@ for j, s in enumerate(gb_config_file):
 
         source_tmp = myGB.LISA_GB_source(pGW["Name"], params)
         list_of_sources.append(source_tmp)
-        list_of_amplitude.append(
-            source_tmp.get_source_parameters()[0][2] / (1e-23)
-        )  # pylint: disable=line-too-long
+        list_of_amplitude.append(source_tmp.get_source_parameters()[0][2] / (1e-23))
 
-        X, _, _, kmin = GB.get_fd_tdixyz(
-            source_tmp.get_source_parameters(), tdi2=True
-        )  # pylint: disable=line-too-long
+        X, _, _, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)
         X_f = df * np.arange(kmin, kmin + len(X.flatten()))
 
         h0 = np.sqrt(4 * df * float(np.sum(np.abs(X) ** 2 / R(X_f))))

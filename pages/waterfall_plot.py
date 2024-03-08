@@ -44,7 +44,9 @@ else:
 
 T = load_data(fn)
 
-[z_mesh, Msource_mesh, SNR_mesh, SNR_std_mesh, waveform_params, pop] = T
+[z_mesh, Msource_mesh, SNR_mesh, SNR_std_mesh, waveform_params, pop] = (
+    T  # pylint: disable=unused-variable
+)
 
 SN_cl = np.clip(SNR_mesh, 1.0, 4000)  # None)
 tickvals = [10, 20, 50, 100, 200, 500, 1000, 4000]
