@@ -210,7 +210,6 @@ fig.update_layout(
 fig.update_layout(height=600, width=1000)
 st.plotly_chart(fig, theme=None, use_container_width=True)
 
-
 fig2 = go.Figure()
 fig2.add_trace(go.Scatter(x=freq, y=SXX_noise_instru_only, name="instru"))
 
