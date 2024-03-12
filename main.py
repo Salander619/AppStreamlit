@@ -20,7 +20,7 @@ cm.display_config()
 # pages and sections gestion
 show_pages(
     [
-        Page("main.py", "Home"),
+        Page("main.py", "Home page"),
         Section(
             name="SO1: Study the formation and evolution of compact binary stars and the structure of the Milky Way Galaxy"  # pylint: disable=line-too-long
         ),

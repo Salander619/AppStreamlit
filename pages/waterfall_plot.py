@@ -8,7 +8,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 
-from st_pages import add_indentation
+from st_pages import add_indentation, add_page_title
 from config_manager import ConfigManager
 
 ##############################################################################
@@ -18,6 +18,7 @@ im = Image.open("images/lisa.ico")
 st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
 
 add_indentation()
+add_page_title()
 
 
 ##############################################################################
@@ -69,3 +70,19 @@ fig2["layout"]["yaxis"].title = "Redshift"
 fig2["layout"]["xaxis"].title = "Total mass"
 
 st.plotly_chart(fig2, theme=None, use_container_width=True)
+
+with open("waterfallPlot.ipynb", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download as a notebook",
+        data=file,
+        file_name="waterfall_plot_generation_display.ipynb",
+        mime="application/x-ipynb+json",
+    )
+
+with open("installationInstruction.md", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download installation guide",
+        data=file,
+        file_name="installation_guide.md",
+        mime="text/markdown",
+    )

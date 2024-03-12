@@ -16,7 +16,7 @@ from PIL import Image
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-from st_pages import add_indentation
+from st_pages import add_indentation, add_page_title
 from config_manager import ConfigManager
 
 # homemade
@@ -29,6 +29,7 @@ im = Image.open("images/lisa.ico")
 st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_indentation()
+add_page_title()
 
 cm = ConfigManager("Sensitivity", False, True)
 cm.display_config()
@@ -52,7 +53,6 @@ list_of_names = gb_config_file["Name"]
 
 list_of_names_opt = list_of_names
 list_of_names_opt = np.append("select all", list_of_names_opt)
-
 
 list_of_sources = []
 list_of_amplitude = []
@@ -80,8 +80,12 @@ test0 = NOISE.LISA_analytical_noise("dummy", 42)
 freq = np.logspace(-5, 0, 9990)
 duration = mission_duration  # years
 tobs = (
-    duration * lisaconstants.SIDEREALYEAR_J2000DAY * 24 * 60 * 60210
-)  # pylint: disable=no-member
+    duration
+    * lisaconstants.SIDEREALYEAR_J2000DAY  # pylint: disable=no-member
+    * 24
+    * 60
+    * 60210
+)
 lisa_orbits = lisaorbits.EqualArmlengthOrbits(dt=8640, size=(tobs + 10000) // 8640)
 # to control the +10000
 
@@ -146,11 +150,6 @@ for vgb in GB_out:
     vy.append(float(np.sqrt(vgb["freq"] * vgb["sh"])))
 
 ## end of fake data
-
-# col1, col2 = st.columns([3,1])
-# col1.write('Figure')
-# col2.write('Buttons')
-
 
 fig = go.Figure()
 
