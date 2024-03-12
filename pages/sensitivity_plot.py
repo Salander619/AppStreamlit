@@ -86,7 +86,10 @@ tobs = (
     * 60
     * 60210
 )
-lisa_orbits = lisaorbits.EqualArmlengthOrbits(dt=8640, size=(tobs + 10000) // 8640)
+lisa_orbits = lisaorbits.EqualArmlengthOrbits(
+    dt=8640,
+    size=(tobs + 10000) // 8640,
+)
 # to control the +10000
 
 # noise psd
@@ -130,10 +133,15 @@ for j, s in enumerate(gb_config_file):
 
         source_tmp = myGB.LISA_GB_source(pGW["Name"], params)
         list_of_sources.append(source_tmp)
-        list_of_amplitude.append(source_tmp.get_source_parameters()[0][2] / (1e-23))
+        list_of_amplitude.append(
+            source_tmp.get_source_parameters()[0][2] / (1e-23),
+        )
 
         # pylint: disable=unused-variable
-        X, _, _, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)
+        X, _, _, kmin = GB.get_fd_tdixyz(
+            source_tmp.get_source_parameters(),
+            tdi2=True,
+        )
         X_f = df * np.arange(kmin, kmin + len(X.flatten()))
 
         h0 = np.sqrt(4 * df * float(np.sum(np.abs(X) ** 2 / R(X_f))))
