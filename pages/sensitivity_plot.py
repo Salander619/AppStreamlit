@@ -170,7 +170,11 @@ fig.add_trace(
 )
 
 fig.add_trace(
-    go.Scatter(x=freq, y=np.sqrt(freq) * np.sqrt(sh(freq)), name="Instrumental Noise")
+    go.Scatter(
+        x=freq,
+        y=np.sqrt(freq) * np.sqrt(sh(freq)),
+        name="Instrumental Noise",
+    )
 )
 
 
@@ -190,7 +194,11 @@ fig.update_xaxes(
     showexponent="all",
     exponentformat="e",
 )
-fig.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
+fig.update_yaxes(
+    title_text="Characteristic Strain (TODO)",
+    type="log",
+    showgrid=True,
+)
 fig.update_layout(xaxis={"range": [-5, 0]})
 fig.update_layout(yaxis={"range": [-22, -15]})
 fig.update_layout(template="ggplot2")
@@ -229,5 +237,9 @@ fig2.update_xaxes(
     showexponent="all",
     exponentformat="e",
 )
-fig2.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
+fig2.update_yaxes(
+    title_text="Characteristic Strain (TODO)",
+    type="log",
+    showgrid=True,
+)
 st.plotly_chart(fig2, theme=None, use_container_width=True)
