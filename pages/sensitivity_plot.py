@@ -251,3 +251,19 @@ fig2.update_yaxes(
     showgrid=True,
 )
 st.plotly_chart(fig2, theme=None, use_container_width=True)
+
+with open("sensitivityPlot.ipynb", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download as a notebook",
+        data=file,
+        file_name="sensitivity_plot_generation_display.ipynb",
+        mime="application/x-ipynb+json",
+    )
+
+with open("installationInstruction.md", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download installation guide",
+        data=file,
+        file_name="installation_guide.md",
+        mime="text/markdown",
+    )
