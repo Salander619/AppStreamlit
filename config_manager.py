@@ -5,25 +5,45 @@
 import streamlit as st
 
 
-def display_config():
-    st.session_state.update(st.session_state)
+# pylint: disable=unused-variable
+class ConfigManager:
+    """Setup the configuration throught st_session_state"""
 
-    st.sidebar.header("Common configuration")
+    def __init__(self, name_fom, use_noise_config, use_duration_config):
+        self.name = name_fom
 
-    # initialisation for first run
-    if "noise_budget" not in st.session_state:
-        st.session_state["noise_budget"] = "config 1"
-    if "duration" not in st.session_state:
-        st.session_state["duration"] = "4 years"
+        self.use_noise_config = use_noise_config
+        self.use_duration_config = use_duration_config
 
-    # setup noise config
-    st.sidebar.radio(
-        "Select your noise configuration",
-        ["config 1", "config 2", "config 3"],
-        key="noise_budget",
-    )
+    def display_config(self):
+        """display the configuration and modification widget"""
+        st.session_state.update(st.session_state)
 
-    # setup mission duration
-    st.sidebar.radio(
-        "Select the mission duration", ["4 years", "7 years"], key="duration"
-    )
+        if self.name == "Home":
+            return
+
+        st.sidebar.header(self.name + " configuration")
+
+        # initialisation for first run
+        if "noise_budget" not in st.session_state:
+            st.session_state["noise_budget"] = "fom"
+        if "duration" not in st.session_state:
+            st.session_state["duration"] = 4.0
+
+        # setup noise config
+        if self.use_noise_config:
+            st.sidebar.radio(
+                "Select your noise configuration",
+                ["fom", "scird"],
+                key="noise_budget",
+            )
+
+        # setup mission duration
+        if self.use_duration_config:
+            st.sidebar.slider(
+                "duration in year ?",
+                min_value=1.0,
+                max_value=10.0,
+                step=0.5,
+                key="duration",
+            )

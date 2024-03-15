@@ -16,27 +16,23 @@ from PIL import Image
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-# from config_manager import ConfigManager
-from st_pages import add_indentation
-import config_manager
+from st_pages import add_indentation, add_page_title
+from config_manager import ConfigManager
 
 # homemade
 import LISA_GB_configuration as myGB
 import LISA_noise_configuration as NOISE
 import utils
 
-apptitle = "FOM display facility"
+app_title = "FOM display facility"
 im = Image.open("images/lisa.ico")
-st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
+st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
 add_indentation()
+add_page_title()
 
-### test shared parameter
-# shared_data = ConfigManager()
-# shared_data.display_parameter()
-
-config_manager.display_config()
-st.write(st.session_state)
+cm = ConfigManager("Sensitivity", False, True)
+cm.display_config()
 
 ### data init
 # verification GB reader
@@ -53,12 +49,10 @@ GB_out = np.rec.fromarrays(
     names=["freq", "sh", "snr"],
 )
 
-
 list_of_names = gb_config_file["Name"]
 
 list_of_names_opt = list_of_names
 list_of_names_opt = np.append("select all", list_of_names_opt)
-
 
 list_of_sources = []
 list_of_amplitude = []
@@ -74,28 +68,10 @@ if "select all" in list_of_GB:
     list_of_GB = list_of_names
 
 
-mission_duration = st.sidebar.slider(
-    "duration in year ?", min_value=1.0, max_value=10.0, step=0.5
-)
+mission_duration = st.session_state["duration"]
 
-# nb_of_GB = st.sidebar.slider('number of GB ?', min_value=0, max_value=max_nb_of_sources, step=1)
-
-tdi_type = st.sidebar.radio(
-    "select your TDI version", ["tdi1.5", "tdi2.0"]
-)  # horizontal=True,)
-
-if tdi_type == "tdi1.5":
-    tdi2 = False
-elif tdi_type == "tdi2.0":
-    tdi2 = True
-else:
-    tdi2 = False
-
-
-# display mode
-display_mode = st.sidebar.radio(
-    "select your display mode", ["x unified", "x", "closest"]
-)
+tdi2 = True
+display_mode = "x unified"
 
 ####### prepare the data
 # noise
@@ -103,8 +79,17 @@ test0 = NOISE.LISA_analytical_noise("dummy", 42)
 
 freq = np.logspace(-5, 0, 9990)
 duration = mission_duration  # years
-tobs = duration * lisaconstants.SIDEREALYEAR_J2000DAY * 24 * 60 * 60210
-lisa_orbits = lisaorbits.EqualArmlengthOrbits(dt=8640, size=(tobs + 10000) // 8640)
+tobs = (
+    duration
+    * lisaconstants.SIDEREALYEAR_J2000DAY  # pylint: disable=no-member
+    * 24
+    * 60
+    * 60210
+)
+lisa_orbits = lisaorbits.EqualArmlengthOrbits(
+    dt=8640,
+    size=(tobs + 10000) // 8640,
+)
 # to control the +10000
 
 # noise psd
@@ -113,16 +98,6 @@ SXX_confusion_noise_only = test0.confusion_noise_psd(
     freq, duration_=duration, tdi2_=tdi2, option_="X"
 )
 SXX_noise = SXX_noise_instru_only + SXX_confusion_noise_only
-
-SXY_noise_instru_only = test0.instru_noise_psd(freq, tdi2_=tdi2, option_="XY")
-SXY_confusion_noise_only = test0.confusion_noise_psd(
-    freq, duration_=duration, tdi2_=tdi2, option_="XY"
-)
-SXY_noise = SXY_noise_instru_only + SXX_confusion_noise_only
-
-
-SXX = spline(freq, SXX_noise)
-SXY = spline(freq, SXY_noise)
 
 # response
 R_ = utils.fast_response(freq, tdi2=tdi2)
@@ -158,23 +133,21 @@ for j, s in enumerate(gb_config_file):
 
         source_tmp = myGB.LISA_GB_source(pGW["Name"], params)
         list_of_sources.append(source_tmp)
-        list_of_amplitude.append(source_tmp.get_source_parameters()[0][2] / (1e-23))
+        list_of_amplitude.append(
+            source_tmp.get_source_parameters()[0][2] / (1e-23),
+        )
 
-        X, Y, Z, kmin = GB.get_fd_tdixyz(source_tmp.get_source_parameters(), tdi2=True)
+        # pylint: disable=unused-variable
+        X, _, _, kmin = GB.get_fd_tdixyz(
+            source_tmp.get_source_parameters(),
+            tdi2=True,
+        )
         X_f = df * np.arange(kmin, kmin + len(X.flatten()))
 
         h0 = np.sqrt(4 * df * float(np.sum(np.abs(X) ** 2 / R(X_f))))
         h0 *= np.sqrt(2)
         GB_out["sh"][j] = h0**2
         GB_out["freq"][j] = pGW["Frequency"]
-
-list_of_source = []
-
-# st.error('Error message')
-# st.warning('Warning message')
-# st.info('Info message')
-# st.success('Success message')
-
 
 ####### display the sensitivity curve
 vf = []
@@ -186,15 +159,9 @@ for vgb in GB_out:
 
 ## end of fake data
 
-# col1, col2 = st.columns([3,1])
-# col1.write('Figure')
-# col2.write('Buttons')
-
-
 fig = go.Figure()
 
 tmp = list_of_names.tolist()  # list_of_GB
-
 
 fig.add_trace(
     go.Scatter(
@@ -211,7 +178,11 @@ fig.add_trace(
 )
 
 fig.add_trace(
-    go.Scatter(x=freq, y=np.sqrt(freq) * np.sqrt(sh(freq)), name="Instrumental Noise")
+    go.Scatter(
+        x=freq,
+        y=np.sqrt(freq) * np.sqrt(sh(freq)),
+        name="Instrumental Noise",
+    )
 )
 
 
@@ -231,20 +202,29 @@ fig.update_xaxes(
     showexponent="all",
     exponentformat="e",
 )
-fig.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
-fig.update_layout(xaxis=dict(range=[-5, 0]))
-fig.update_layout(yaxis=dict(range=[-22, -15]))
+fig.update_yaxes(
+    title_text="Characteristic Strain (TODO)",
+    type="log",
+    showgrid=True,
+)
+fig.update_layout(xaxis={"range": [-5, 0]})
+fig.update_layout(yaxis={"range": [-22, -15]})
 fig.update_layout(template="ggplot2")
 
 fig.update_layout(hovermode=display_mode)
 
 fig.update_layout(
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    legend={
+        "orientation": "h",
+        "yanchor": "bottom",
+        "y": 1.02,
+        "xanchor": "right",
+        "x": 1,
+    }
 )
 
-fig.update_layout(height=600, width=1000)  # , grid= {'rows': 7, 'columns': 6})
+fig.update_layout(height=600, width=1000)
 st.plotly_chart(fig, theme=None, use_container_width=True)
-
 
 fig2 = go.Figure()
 fig2.add_trace(go.Scatter(x=freq, y=SXX_noise_instru_only, name="instru"))
@@ -265,5 +245,25 @@ fig2.update_xaxes(
     showexponent="all",
     exponentformat="e",
 )
-fig2.update_yaxes(title_text="Characteristic Strain (TODO)", type="log", showgrid=True)
+fig2.update_yaxes(
+    title_text="Characteristic Strain (TODO)",
+    type="log",
+    showgrid=True,
+)
 st.plotly_chart(fig2, theme=None, use_container_width=True)
+
+with open("sensitivityPlot.ipynb", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download as a notebook",
+        data=file,
+        file_name="sensitivity_plot_generation_display.ipynb",
+        mime="application/x-ipynb+json",
+    )
+
+with open("installationInstruction.md", "r", encoding="utf-8") as file:
+    st.download_button(
+        label="Download installation guide",
+        data=file,
+        file_name="installation_guide.md",
+        mime="text/markdown",
+    )
