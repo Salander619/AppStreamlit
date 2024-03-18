@@ -71,18 +71,9 @@ fig2["layout"]["xaxis"].title = "Total mass"
 
 st.plotly_chart(fig2, theme=None, use_container_width=True)
 
-with open("notebooks/waterfallPlot.ipynb", "r", encoding="utf-8") as file:
-    st.download_button(
-        label="Download as a notebook",
-        data=file,
-        file_name="waterfall_plot_generation_display.ipynb",
-        mime="application/x-ipynb+json",
-    )
+# Link to nbviewer to see as a notebook
 
-with open("installationInstruction.md", "r", encoding="utf-8") as file:
-    st.download_button(
-        label="Download installation guide",
-        data=file,
-        file_name="installation_guide.md",
-        mime="text/markdown",
-    )
+# pylint: disable=line-too-long
+url_link = "https://nbviewer.org/github/Salander619/AppStreamlit/blob/main/notebooks/waterfallPlot.ipynb"
+
+st.link_button("View as a notebook", url_link)
