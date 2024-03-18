@@ -71,7 +71,7 @@ fig2["layout"]["xaxis"].title = "Total mass"
 
 st.plotly_chart(fig2, theme=None, use_container_width=True)
 
-with open("waterfallPlot.ipynb", "r", encoding="utf-8") as file:
+with open("notebooks/waterfallPlot.ipynb", "r", encoding="utf-8") as file:
     st.download_button(
         label="Download as a notebook",
         data=file,
