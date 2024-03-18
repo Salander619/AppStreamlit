@@ -1,0 +1,5 @@
+## Download common files application
+appFOM @ git+https://github.com/Salander619/appFOM.git
+
+## Download jupyter notebook
+jupyterlab==4.1.3

@@ -9,3 +9,4 @@ lisaorbits==2.3
 plotly==5.18.0
 st_pages @ git+https://github.com/blackary/st_pages.git
 pillow==10.2.0
+FOM_app @ git+https://github.com/Salander619/FOM_app.git

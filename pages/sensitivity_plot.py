@@ -12,17 +12,18 @@ import plotly.graph_objects as go
 import streamlit as st
 from PIL import Image
 
+# homemade
+# pylint: disable=import-error
+from appFOM import LISA_GB_configuration as myGB
+from appFOM import LISA_noise_configuration as NOISE
+from appFOM import utils
+
 # common
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
 from st_pages import add_indentation, add_page_title
 from config_manager import ConfigManager
-
-# homemade
-import LISA_GB_configuration as myGB
-import LISA_noise_configuration as NOISE
-import utils
 
 app_title = "FOM display facility"
 im = Image.open("images/lisa.ico")
@@ -252,7 +253,7 @@ fig2.update_yaxes(
 )
 st.plotly_chart(fig2, theme=None, use_container_width=True)
 
-with open("sensitivityPlot.ipynb", "r", encoding="utf-8") as file:
+with open("notebooks/sensitivityPlot.ipynb", "r", encoding="utf-8") as file:
     st.download_button(
         label="Download as a notebook",
         data=file,
