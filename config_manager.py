@@ -26,24 +26,24 @@ class ConfigManager:
 
         # initialisation for first run
         if "noise_budget" not in st.session_state:
-            st.session_state["noise_budget"] = "fom"
+            st.session_state["noise_budget"] = "redbook"
         if "duration" not in st.session_state:
             st.session_state["duration"] = 4.0
 
         # setup noise config
-        if self.use_noise_config:
-            st.sidebar.radio(
-                "Select your noise configuration",
-                ["fom", "scird"],
-                key="noise_budget",
-            )
+        st.sidebar.radio(
+            "Select your noise configuration",
+            ["redbook", "scird"],
+            key="noise_budget",
+            disabled=not self.use_noise_config,
+        )
 
         # setup mission duration
-        if self.use_duration_config:
-            st.sidebar.slider(
-                "duration in year ?",
-                min_value=1.0,
-                max_value=10.0,
-                step=0.5,
-                key="duration",
-            )
+        st.sidebar.slider(
+            "duration in year ?",
+            min_value=1.0,
+            max_value=10.0,
+            step=0.5,
+            key="duration",
+            disabled=not self.use_duration_config,
+        )

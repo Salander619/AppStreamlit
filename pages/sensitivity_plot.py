@@ -32,7 +32,7 @@ st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 add_indentation()
 add_page_title()
 
-cm = ConfigManager("Sensitivity", False, True)
+cm = ConfigManager("Sensitivity", True, True)
 cm.display_config()
 
 ### data init
@@ -76,7 +76,7 @@ display_mode = "x unified"
 
 ####### prepare the data
 # noise
-test0 = NOISE.LISA_analytical_noise("dummy", 42)
+test0 = NOISE.LISA_analytical_noise(st.session_state["noise_budget"], 42)
 
 freq = np.logspace(-5, 0, 9990)
 duration = mission_duration  # years
