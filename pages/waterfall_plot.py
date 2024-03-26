@@ -74,6 +74,6 @@ st.plotly_chart(fig2, theme=None, use_container_width=True)
 # Link to nbviewer to see as a notebook
 
 # pylint: disable=line-too-long
-url_link = "https://nbviewer.org/github/Salander619/AppStreamlit/blob/main/notebooks/waterfallPlot.ipynb"
+url_link = "https://nbviewer.org/github/Salander619/AppStreamlit/blob/main/notebooks/waterfall_plot.ipynb"
 
 st.link_button("View as a notebook", url_link)
