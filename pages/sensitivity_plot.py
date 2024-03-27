@@ -22,14 +22,13 @@ from appFOM import utils
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline as spline
 
-from st_pages import add_indentation, add_page_title
+from st_pages import add_page_title
 from config_manager import ConfigManager
 
 app_title = "FOM display facility"
 im = Image.open("images/lisa.ico")
 st.set_page_config(page_title=app_title, page_icon=im, layout="wide")
 
-add_indentation()
 add_page_title()
 
 cm = ConfigManager("Sensitivity", True, True)

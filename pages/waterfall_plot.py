@@ -8,7 +8,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 
-from st_pages import add_indentation, add_page_title
+from st_pages import add_page_title
 from config_manager import ConfigManager
 
 ##############################################################################
@@ -17,7 +17,6 @@ apptitle = "FOM display facility"
 im = Image.open("images/lisa.ico")
 st.set_page_config(page_title=apptitle, page_icon=im, layout="wide")
 
-add_indentation()
 add_page_title()
 
 
